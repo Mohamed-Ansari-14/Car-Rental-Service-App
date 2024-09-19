@@ -20,6 +20,31 @@ export class CustomerService {
     });
   }
 
+  getCarById(carId: number): Observable<any> {
+    return this.http.get(`${BASE_URL}/api/customer/car/${carId}`, {
+      headers: this.createAuthorization()
+    });
+  }
+
+  bookACar(bookACarDto: any): Observable<any> {
+    return this.http.post(`${BASE_URL}/api/customer/car/book`, bookACarDto, {
+      headers: this.createAuthorization()
+    });
+  }
+
+  getBookingsByUserId(): Observable<any> {
+    const userId = StorageService.getUserId();
+    return this.http.get(`${BASE_URL}/api/customer/car/bookings/${userId}`, {
+      headers: this.createAuthorization()
+    });
+  }
+
+  searchCar(SearchCarDto: any): Observable<any> {
+    return this.http.post(`${BASE_URL}/api/customer/car/search`, SearchCarDto, {
+      headers: this.createAuthorization()
+    });
+  }
+
   createAuthorization(): HttpHeaders{
     let authHeaders: HttpHeaders = new HttpHeaders();
     return authHeaders.set(

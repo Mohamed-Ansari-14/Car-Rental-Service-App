@@ -44,6 +44,24 @@ export class AdminService {
     });
   }
 
+  getCarBookings(): Observable<any> {
+    return this.http.get(`${BASE_URL}/api/admin/car/bookings`, {
+      headers: this.createAuthorization()
+    });
+  }
+
+  changeBookingStatus(bookingId: number, status:string): Observable<any> {
+    return this.http.get(`${BASE_URL}/api/admin/car/booking/${bookingId}/${status}`, {
+      headers: this.createAuthorization()
+    });
+  }
+
+  searchCar(SearchCarDto: any): Observable<any> {
+    return this.http.post(`${BASE_URL}/api/admin/car/search`, SearchCarDto, {
+      headers: this.createAuthorization()
+    });
+  }
+
   createAuthorization(): HttpHeaders{
     let authHeaders: HttpHeaders = new HttpHeaders();
     return authHeaders.set(

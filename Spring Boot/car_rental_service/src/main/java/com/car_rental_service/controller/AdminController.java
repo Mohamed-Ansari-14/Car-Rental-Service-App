@@ -1,6 +1,7 @@
 package com.car_rental_service.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,10 +11,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.car_rental_service.dto.BookACarDto;
 import com.car_rental_service.dto.CarDto;
+import com.car_rental_service.dto.SearchCarDto;
 import com.car_rental_service.services.admin.AdminService;
 
 import lombok.RequiredArgsConstructor;
@@ -63,6 +67,25 @@ public class AdminController {
 		}catch(Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}
+	}
+	
+	@GetMapping("/car/bookings")
+	public ResponseEntity<List<BookACarDto>> getBookings(){
+		return ResponseEntity.ok(adminService.getBookings());
+	}
+	
+	@GetMapping("/car/booking/{bookingId}/{status}")
+	public ResponseEntity<?> changeBookingStatus(@PathVariable Long bookingId,@PathVariable String status){
+		boolean success = adminService.changeBookingStatus(bookingId, status);
+		if(success)
+			return ResponseEntity.ok().build();
+		else
+			return ResponseEntity.notFound().build();
+	}
+	
+	@PostMapping("/car/search")
+	public ResponseEntity<?> searchCar(@RequestBody SearchCarDto searchCarDto){
+		return ResponseEntity.ok(adminService.searchCar(searchCarDto));
 	}
 }
 
